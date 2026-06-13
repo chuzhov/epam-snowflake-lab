@@ -370,6 +370,31 @@
       section { padding: 24px 20px; }
       .page-wrap { padding: 24px 16px 60px; }
     }
+
+    /* ── Back to top ── */
+    #back-to-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #0f3460;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.15s ease;
+      z-index: 999;
+    }
+    #back-to-top.visible { opacity: 1; pointer-events: auto; }
+    #back-to-top:hover { background: #0d7377; transform: translateY(-2px); }
+    #back-to-top svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
   </style>
 </head>
 <body>
@@ -845,5 +870,17 @@ DIM_REGION     (also used standalone for region-level aggregations)</pre>
   </section>
 
 </div>
+
+<button id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+  const btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 300);
+  });
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
 </body>
 </html>
