@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Summary — EPAM Snowflake Hands-on Lab</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #1a1a2e;
+      background: #f4f6fb;
+    }
+
+    /* ── Layout ── */
+    .page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 60%, #0d7377 100%);
+      color: #fff;
+      padding: 48px 40px 40px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+    }
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+    .logo-epam {
+      height: 30px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .logo-divider {
+      width: 1px;
+      height: 28px;
+      background: rgba(255,255,255,0.3);
+    }
+    .logo-snowflake {
+      height: 30px;
+      width: auto;
+      filter: brightness(0) invert(1) drop-shadow(0 0 6px rgba(41,181,232,0.7));
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    header h1 .h1-sub {
+      display: block;
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0;
+      margin-top: 4px;
+    }
+    header .goal {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.88);
+      line-height: 1.6;
+      max-width: 720px;
+    }
+    header .badges {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Author card ── */
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .header-main { flex: 1 1 460px; min-width: 0; }
+    .author {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+    }
+    .author-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.85);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    }
+    .author-name {
+      margin-top: 12px;
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0;
+    }
+    .author-links { margin-top: 8px; display: flex; gap: 14px; align-items: center; }
+    .author-links a {
+      display: inline-flex;
+      color: rgba(255,255,255,0.82);
+      transition: color 0.15s ease, transform 0.15s ease;
+    }
+    .author-links a:hover { color: #fff; transform: translateY(-2px); }
+    .author-links svg { width: 22px; height: 22px; fill: currentColor; }
+
+    /* ── Sections ── */
+    section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f3460;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf5;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    section h2 .icon {
+      font-size: 20px;
+    }
+    section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f3460;
+      margin: 24px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    p {
+      margin-bottom: 12px;
+      color: #333;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin: 4px 0 8px;
+    }
+    th {
+      background: #0f3460;
+      color: #fff;
+      font-weight: 600;
+      padding: 9px 14px;
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+    th:first-child { border-radius: 6px 0 0 0; }
+    th:last-child  { border-radius: 0 6px 0 0; }
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #eef1f6;
+      color: #333;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f8fafd; }
+    tr:hover td { background: #eef4ff; }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #111827;
+      color: #e2e8f0;
+      padding: 20px 22px;
+      border-radius: 8px;
+      font-family: "Cascadia Code", "Fira Code", "Courier New", monospace;
+      font-size: 12.5px;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin: 12px 0;
+      tab-size: 2;
+    }
+    code {
+      font-family: "Cascadia Code", "Fira Code", "Courier New", monospace;
+      font-size: 12.5px;
+      background: #eef1f8;
+      color: #0d47a1;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    /* ── Ingestion patterns ── */
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 4px 0 8px;
+    }
+    .pattern-card {
+      border: 1px solid #dce4f0;
+      border-radius: 8px;
+      padding: 18px;
+      position: relative;
+    }
+    .pattern-card .num {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: #0f3460;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .pattern-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f3460;
+      margin-bottom: 6px;
+    }
+    .pattern-card .schema-tag {
+      font-size: 11px;
+      font-family: monospace;
+      background: #e8edf8;
+      color: #0f3460;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .pattern-card p {
+      font-size: 12.5px;
+      color: #555;
+      margin-bottom: 0;
+    }
+    .pattern-card .tag {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .tag-event   { background: #dbeafe; color: #1e40af; }
+    .tag-config  { background: #dcfce7; color: #166534; }
+    .tag-decl    { background: #fce7f3; color: #9d174d; }
+
+    /* ── Score table status ── */
+    .status-done   { color: #16a34a; font-weight: 700; font-size: 16px; }
+    .status-todo   { color: #9ca3af; font-size: 16px; }
+    .score-total td { font-weight: 700; background: #0f3460 !important; color: #fff; }
+    .score-total td:nth-child(3) { color: #86efac; }
+
+    /* ── Design decisions ── */
+    .decision {
+      border-left: 3px solid #0d7377;
+      padding: 12px 16px;
+      margin: 16px 0;
+      background: #f0fbfc;
+      border-radius: 0 6px 6px 0;
+    }
+    .decision strong {
+      display: block;
+      color: #0f3460;
+      margin-bottom: 4px;
+      font-size: 13.5px;
+    }
+    .decision p {
+      font-size: 13px;
+      color: #444;
+      margin-bottom: 0;
+    }
+
+    /* ── Schema layout ── */
+    .schema-list {
+      list-style: none;
+      font-family: monospace;
+      font-size: 13px;
+      background: #111827;
+      color: #e2e8f0;
+      padding: 20px 22px;
+      border-radius: 8px;
+      line-height: 2;
+    }
+    .schema-list li { display: flex; gap: 12px; }
+    .schema-list .name { color: #93c5fd; font-weight: 700; min-width: 130px; }
+    .schema-list .desc { color: #94a3b8; }
+
+    /* ── Timeline ── */
+    .timeline {
+      border-left: 2px solid #dce4f0;
+      margin-left: 8px;
+      padding-left: 20px;
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -26px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #0d7377;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 2px #0d7377;
+    }
+    .tl-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f3460;
+      font-family: monospace;
+    }
+    .tl-desc {
+      font-size: 13px;
+      color: #444;
+    }
+    .tl-desc code { font-size: 12px; }
+
+    /* ── Runbook ── */
+    ol { padding-left: 20px; }
+    ol li { margin-bottom: 6px; font-size: 13.5px; color: #333; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .pattern-grid { grid-template-columns: 1fr; }
+      header { padding: 32px 24px; }
+      section { padding: 24px 20px; }
+      .page-wrap { padding: 24px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="header-main">
+      <div class="logo-row">
+        <img class="logo-epam" src="img/epam-logo.svg" alt="EPAM" />
+        <div class="logo-divider"></div>
+        <img class="logo-snowflake" src="img/snowflake-logo.svg" alt="Snowflake" />
+      </div>
+      <h1>EPAM Snowflake Hands-on Lab<span class="h1-sub">— Project Summary</span></h1>
+      <p class="goal">
+        A hands-on coverage of Snowflake's core and advanced feature set — Snowpipe, append-only
+        Streams, scheduled and stream-gated Tasks, Snowflake Scripting stored procedures, Dynamic
+        Tables, External Tables, Time Travel, Zero-copy Cloning, and Secure Data Sharing —
+        grounded in a realistic CRM export workflow: a nightly Azure Function mimicking a CRM's daily order export drops fresh files into ADLS Gen2,
+        three parallel ingestion paths process the data, and a star schema data mart serves Power BI.
+      </p>
+      <div class="badges">
+        <span class="badge">Azure ADLS Gen2</span>
+        <span class="badge">Snowflake</span>
+        <span class="badge">Snowpipe</span>
+        <span class="badge">Dynamic Tables</span>
+        <span class="badge">External Tables</span>
+        <span class="badge">Azure Functions</span>
+        <span class="badge">Power BI</span>
+        <span class="badge">TPC-H SF=2 · ~15 M rows</span>
+        <span class="badge">Target ≥ 60 / 100 pts</span>
+      </div>
+    </div>
+
+    <div class="author">
+      <img class="author-avatar" src="img/avatar.jpg" alt="Dan Chuzhov" />
+      <div class="author-name">Dan Chuzhov</div>
+      <div class="author-links">
+        <a href="https://github.com/chuzhov" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.509 11.509 0 0 1 3.003-.404c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/dan-chuzhov/?locale=en-US" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" /></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Technology Stack ── -->
+  <section>
+    <h2><span class="icon">🛠</span> Technology Stack</h2>
+    <table>
+      <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+      <tbody>
+        <tr><td>Data generation</td><td>Python + DuckDB (<code>splitter.py</code>)</td></tr>
+        <tr><td>Cloud storage</td><td>Azure ADLS Gen2 (container <code>crm-data</code>)</td></tr>
+        <tr><td>Event routing</td><td>Azure Event Grid → Azure Queue Storage</td></tr>
+        <tr><td>Serverless compute</td><td>Azure Functions (Python 3.11, Flex Consumption)</td></tr>
+        <tr><td>Data warehouse</td><td>Snowflake (trial, AWS-hosted, West Europe region)</td></tr>
+        <tr><td>Email alerts</td><td>SendGrid (free tier, 100 emails/day)</td></tr>
+        <tr><td>BI tool</td><td>Power BI Desktop + Power BI Service</td></tr>
+        <tr><td>SQL editor</td><td>DBeaver</td></tr>
+        <tr><td>Auth (service account)</td><td>RSA key-pair — no passwords in automation</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Three Ingestion Patterns ── -->
+  <section>
+    <h2><span class="icon">⚡</span> Three Ingestion Patterns</h2>
+    <p>All three patterns consume the <strong>same daily files</strong> dropped by <code>crm_mimic</code> into <code>raw/</code>. Row counts are cross-validated in the validation steps.</p>
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <div class="num">1</div>
+        <h4>Snowpipe</h4>
+        <div class="schema-tag">STAGE_AREA → CORE_DWH → DATA_MART</div>
+        <p>Event Grid → Queue → Snowpipe → Streams + Tasks + Stored Procedures</p>
+        <span class="tag tag-event">Event-driven · Imperative DML</span>
+      </div>
+      <div class="pattern-card">
+        <div class="num">2</div>
+        <h4>External Tables + Script Registry</h4>
+        <div class="schema-tag">CORE_DWH_EXT via TECH_DBO</div>
+        <p>Scheduled task refreshes external table metadata → streams → <code>SP_RUN_INGEST</code> loops over INGEST table</p>
+        <span class="tag tag-config">Config-driven · Extensible</span>
+      </div>
+      <div class="pattern-card">
+        <div class="num">3</div>
+        <h4>Dynamic Tables</h4>
+        <div class="schema-tag">DATA_MART_DT</div>
+        <p>Declarative SELECT; Snowflake manages refresh, dependency ordering, and incremental strategy automatically</p>
+        <span class="tag tag-decl">Declarative · Zero DML</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Daily Schedule ── -->
+  <section>
+    <h2><span class="icon">🕐</span> Daily Automated Schedule (UTC)</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-time">18:00</div>
+        <div class="tl-desc"><code>crm_mimic</code> (Azure Fn) — copies today's file pair from <code>seed/future_batches/</code> to <code>raw/orders/</code> and <code>raw/lineitem/</code></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">18:01</div>
+        <div class="tl-desc">Snowpipe — Event Grid → Queue → Snowpipe ingests files into <code>STAGE_AREA.ORDERS / LINEITEM</code></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">18:05</div>
+        <div class="tl-desc"><code>task_refresh_ext_tables</code> — refreshes <code>EXT_ORDERS</code> and <code>EXT_LINEITEM</code> metadata; external table streams populate</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">18:30</div>
+        <div class="tl-desc"><code>task_refresh_pipe_log</code> — snapshots Snowpipe health and COPY_HISTORY into <code>ADMIN.PIPE_STATUS_LOG</code> + <code>PIPE_INGESTION_LOG</code></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">18:35</div>
+        <div class="tl-desc"><code>task_run_ingest</code> — calls <code>SP_RUN_INGEST</code>; MERGEs external table streams into <code>CORE_DWH_EXT.ORDERS / LINEITEM</code></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">18:45</div>
+        <div class="tl-desc"><code>crm_archival</code> (Azure Fn) — reads ADMIN logs; moves blobs to <code>archive/</code> or <code>rejected/</code>; sends SendGrid alert email if any issues</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">19:00</div>
+        <div class="tl-desc"><code>task_stage_to_core</code> → <code>sp_stage_to_core</code> — promotes new rows from <code>STAGE_AREA</code> streams into <code>CORE_DWH</code></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">19:00+</div>
+        <div class="tl-desc"><code>task_core_to_mart</code> → <code>sp_core_to_mart</code> — refreshes <code>DATA_MART</code> star schema (dims full refresh, fact incremental from stream)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">~20:00</div>
+        <div class="tl-desc">Dynamic Tables auto-refresh (<code>LAG = 1 hour</code>) — <code>DATA_MART_DT</code> declarative star schema refreshed by Snowflake automatically</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Snowflake Schema Layout ── -->
+  <section>
+    <h2><span class="icon">🗄</span> Snowflake Schema Layout</h2>
+    <ul class="schema-list">
+      <li><span class="name">STAGE_AREA</span><span class="desc">Raw landing zone — Snowpipe target; 8 TPC-H tables</span></li>
+      <li><span class="name">CORE_DWH</span><span class="desc">3NF curated layer — promoted from STAGE_AREA via append-only streams + tasks</span></li>
+      <li><span class="name">DATA_MART</span><span class="desc">Star schema — imperative (streams + tasks + stored procedures)</span></li>
+      <li><span class="name">DATA_MART_DT</span><span class="desc">Star schema — declarative (Dynamic Tables, LAG = 1 hour, no DML needed)</span></li>
+      <li><span class="name">CORE_DWH_EXT</span><span class="desc">Advanced lab — external tables (EXT_ORDERS / EXT_LINEITEM) + curated targets</span></li>
+      <li><span class="name">TECH_DBO</span><span class="desc">Advanced lab — script registry (INGEST) + per-run audit log (INGEST_LOG)</span></li>
+      <li><span class="name">ADMIN</span><span class="desc">Operational audit — persistent Snowpipe health snapshots + COPY_HISTORY log</span></li>
+    </ul>
+
+    <h3>STAGE_AREA — raw landing zone (Snowpipe target)</h3>
+    <table>
+      <thead><tr><th>Table</th><th>Rows (SF=2)</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>REGION</code></td><td>5</td><td>static reference</td></tr>
+        <tr><td><code>NATION</code></td><td>25</td><td>static reference</td></tr>
+        <tr><td><code>CUSTOMER</code></td><td>150,000</td><td>static reference</td></tr>
+        <tr><td><code>SUPPLIER</code></td><td>10,000</td><td>static reference</td></tr>
+        <tr><td><code>PART</code></td><td>200,000</td><td>static reference</td></tr>
+        <tr><td><code>PARTSUPP</code></td><td>800,000</td><td>static reference</td></tr>
+        <tr><td><code>ORDERS</code></td><td>2,981,311 + daily</td><td>Snowpipe target — append-only stream consumed by CORE_DWH</td></tr>
+        <tr><td><code>LINEITEM</code></td><td>11,920,598 + daily</td><td>Snowpipe target — append-only stream consumed by CORE_DWH</td></tr>
+        <tr><td><code>SNOWPIPE_CATALOG</code></td><td>2</td><td>admin — pipe registry seed for <code>sp_refresh_pipe_log</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>CORE_DWH — 3NF curated layer</h3>
+    <p style="font-size:13px;color:#555;margin:8px 0 10px;">Same 8 tables as STAGE_AREA (REGION through LINEITEM), promoted via streams + tasks.</p>
+    <table>
+      <thead><tr><th>Object</th><th>Type</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td><code>STR_ORDERS</code></td><td>append-only stream</td><td>captures new rows from STAGE_AREA.ORDERS</td></tr>
+        <tr><td><code>STR_LINEITEM</code></td><td>append-only stream</td><td>captures new rows from STAGE_AREA.LINEITEM</td></tr>
+        <tr><td><code>sp_stage_to_core</code></td><td>stored procedure</td><td>INSERTs stream rows into CORE_DWH tables</td></tr>
+        <tr><td><code>sp_core_to_mart</code></td><td>stored procedure</td><td>full-refresh dims + incremental MERGE into FACT_LINEITEM</td></tr>
+        <tr><td><code>task_stage_to_core</code></td><td>task — 19:00 UTC</td><td>triggers sp_stage_to_core</td></tr>
+        <tr><td><code>task_core_to_mart</code></td><td>task — chained</td><td>triggers sp_core_to_mart (runs after task_stage_to_core)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>DATA_MART — imperative star schema</h3>
+    <table>
+      <thead><tr><th>Table</th><th>PK</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>DIM_DATE</code></td><td>date_key (YYYYMMDD int)</td><td>derived from all 4 date columns in ORDERS + LINEITEM</td></tr>
+        <tr><td><code>DIM_REGION</code></td><td>region_key</td><td>5 rows</td></tr>
+        <tr><td><code>DIM_NATION</code></td><td>nation_key</td><td>25 rows; region_name pre-joined</td></tr>
+        <tr><td><code>DIM_CUSTOMER</code></td><td>customer_key</td><td>denormalized: nation_name + region_name pre-joined</td></tr>
+        <tr><td><code>DIM_SUPPLIER</code></td><td>supplier_key</td><td>denormalized: nation_name + region_name pre-joined</td></tr>
+        <tr><td><code>DIM_PART</code></td><td>part_key</td><td>part + manufacturer attributes</td></tr>
+        <tr><td><code>FACT_LINEITEM</code></td><td>lineitem_key (AUTOINCREMENT)</td><td>FK to all 5 dims; pre-computed <code>net_price</code> + <code>tax_amount</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>DATA_MART_DT — declarative Dynamic Tables (LAG = 1 hour)</h3>
+    <p style="font-size:13px;color:#555;margin-bottom:8px;">Seven dynamic tables (5 dims + nation + region + fact), all <code>LAG = '1 hour'</code>, <code>WAREHOUSE = EPAM_WH</code>. Snowflake resolves the dependency graph and refresh order automatically — no task wiring.</p>
+    <table>
+      <thead><tr><th>Dynamic Table</th><th>Source</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>DT_DIM_REGION</code></td><td>CORE_DWH.REGION</td><td>5 rows</td></tr>
+        <tr><td><code>DT_DIM_NATION</code></td><td>CORE_DWH.NATION + REGION</td><td>25 rows; region_name pre-joined</td></tr>
+        <tr><td><code>DT_DIM_DATE</code></td><td>CORE_DWH.ORDERS + LINEITEM</td><td>UNION (not UNION ALL) — implicit DISTINCT across 4 date columns</td></tr>
+        <tr><td><code>DT_DIM_CUSTOMER</code></td><td>CORE_DWH.CUSTOMER + NATION + REGION</td><td>same denormalization as DATA_MART</td></tr>
+        <tr><td><code>DT_DIM_SUPPLIER</code></td><td>CORE_DWH.SUPPLIER + NATION + REGION</td><td></td></tr>
+        <tr><td><code>DT_DIM_PART</code></td><td>CORE_DWH.PART</td><td></td></tr>
+        <tr><td><code>DT_FACT_LINEITEM</code></td><td>CORE_DWH.LINEITEM + ORDERS</td><td>natural PK (order_id, line_number) — no AUTOINCREMENT</td></tr>
+      </tbody>
+    </table>
+
+    <h3>CORE_DWH_EXT — external tables (Advanced lab)</h3>
+    <table>
+      <thead><tr><th>Object</th><th>Type</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td><code>EXT_ORDERS</code></td><td>external table</td><td>reads <code>raw/orders/*.csv</code> from ADLS stage; metadata-only view of files</td></tr>
+        <tr><td><code>EXT_LINEITEM</code></td><td>external table</td><td>reads <code>raw/lineitem/*.csv</code> from ADLS stage</td></tr>
+        <tr><td><code>STR_EXT_ORDERS</code></td><td>stream — INSERT_ONLY=TRUE</td><td>tracks new files; <code>INSERT_ONLY</code> required for external table streams</td></tr>
+        <tr><td><code>STR_EXT_LINEITEM</code></td><td>stream — INSERT_ONLY=TRUE</td><td>tracks new files added to EXT_LINEITEM</td></tr>
+        <tr><td><code>ORDERS</code></td><td>curated table</td><td>MERGE target populated by SP_RUN_INGEST</td></tr>
+        <tr><td><code>LINEITEM</code></td><td>curated table</td><td>MERGE target populated by SP_RUN_INGEST</td></tr>
+        <tr><td><code>task_refresh_ext_tables</code></td><td>task — 18:05 UTC</td><td><code>ALTER EXTERNAL TABLE … REFRESH</code> on both — replaces unsupported cross-cloud AUTO_REFRESH</td></tr>
+      </tbody>
+    </table>
+
+    <h3>TECH_DBO — script registry (Advanced lab)</h3>
+    <table>
+      <thead><tr><th>Object</th><th>Type</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td><code>INGEST</code></td><td>table</td><td>one row per source→target mapping; SP_RUN_INGEST loops over this</td></tr>
+        <tr><td><code>INGEST_LOG</code></td><td>table</td><td>per-run audit: rows inserted/updated, timestamps, status, error message, query_id</td></tr>
+        <tr><td><code>SP_RUN_INGEST</code></td><td>stored procedure</td><td>Snowflake Scripting; CURSOR FOR INGEST, EXECUTE IMMEDIATE per script, per-script EXCEPTION handling, row counts from RESULT_SCAN</td></tr>
+        <tr><td><code>SP_RUN_INGEST_ONE</code></td><td>stored procedure</td><td>single-script variant called by the per-stream child tasks</td></tr>
+        <tr><td><code>task_run_ingest</code></td><td>task — 18:35 UTC</td><td>orchestrator; calls SP_RUN_INGEST (loops all active scripts)</td></tr>
+        <tr><td><code>task_ingest_orders</code></td><td>child task</td><td><code>AFTER task_run_ingest</code>, gated by <code>SYSTEM$STREAM_HAS_DATA(STR_EXT_ORDERS)</code> — "task on stream" pattern</td></tr>
+        <tr><td><code>task_ingest_lineitem</code></td><td>child task</td><td><code>AFTER task_run_ingest</code>, gated by <code>SYSTEM$STREAM_HAS_DATA(STR_EXT_LINEITEM)</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>ADMIN — operational audit</h3>
+    <table>
+      <thead><tr><th>Object</th><th>Type</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td><code>SNOWPIPE_CATALOG</code></td><td>table</td><td>registry of pipe names; seed for sp_refresh_pipe_log</td></tr>
+        <tr><td><code>PIPE_STATUS_LOG</code></td><td>table</td><td>periodic snapshot of SYSTEM$PIPE_STATUS() per pipe</td></tr>
+        <tr><td><code>PIPE_INGESTION_LOG</code></td><td>table</td><td>persistent mirror of INFORMATION_SCHEMA.COPY_HISTORY</td></tr>
+        <tr><td><code>sp_refresh_pipe_log</code></td><td>stored procedure</td><td>called with lookback-hours arg; populates both log tables</td></tr>
+        <tr><td><code>task_refresh_pipe_log</code></td><td>task — 18:30 UTC</td><td>calls sp_refresh_pipe_log(1)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Star Schema (DATA_MART / DATA_MART_DT)</h3>
+    <pre>DIM_DATE       ─────────────────────────────────────────┐
+DIM_CUSTOMER   (← NATION ← REGION) ─────────────────────┤
+DIM_SUPPLIER   (← NATION ← REGION) ─────────────────────┼──► FACT_LINEITEM
+DIM_PART       ─────────────────────────────────────────┘
+DIM_REGION     (also used standalone for region-level aggregations)</pre>
+  </section>
+
+  <!-- ── ADLS Gen2 Folder Structure ── -->
+  <section>
+    <h2><span class="icon">📁</span> ADLS Gen2 Folder Structure</h2>
+    <pre>crm-data/
+├── seed/
+│   ├── historical/          ← 8 TPC-H tables; bulk COPY INTO once — never re-triggered
+│   └── future_batches/      ← 15 daily file pairs pre-uploaded; crm_mimic reads from here
+├── raw/
+│   ├── orders/              ← crm_mimic writes here; Event Grid + external tables watch this
+│   └── lineitem/
+├── archive/                 ← crm_archival moves successfully-ingested files here
+└── rejected/                ← crm_archival moves failed files here; ready for reprocessing</pre>
+    <p style="margin-top:12px; font-size:13px; color:#555;">
+      <code>seed/</code> is never watched by Event Grid — uploads there never accidentally trigger Snowpipe or populate external table streams.
+    </p>
+  </section>
+
+  <!-- ── Azure Functions ── -->
+  <section>
+    <h2><span class="icon">⚙️</span> Azure Functions</h2>
+
+    <h3>crm_mimic — CRM export simulator</h3>
+    <table>
+      <thead><tr><th>Property</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Trigger</td><td>Timer — <code>0 0 18 * * *</code> (18:00 UTC daily)</td></tr>
+        <tr><td>Source</td><td><code>seed/future_batches/orders_&lt;today&gt;.csv</code> and <code>lineitem_&lt;today&gt;.csv</code></td></tr>
+        <tr><td>Destination</td><td><code>raw/orders/orders_&lt;today&gt;.csv</code> and <code>raw/lineitem/lineitem_&lt;today&gt;.csv</code></td></tr>
+        <tr><td>Effect</td><td>Write triggers Event Grid → Snowpipe (Basic path) and populates external table metadata after 18:05 refresh task (Advanced path)</td></tr>
+        <tr><td>Auth to storage</td><td>Connection string via <code>CRM_STORAGE_CONN_STR</code> env var</td></tr>
+      </tbody>
+    </table>
+
+    <h3>crm_archival — blob lifecycle + alerting</h3>
+    <table>
+      <thead><tr><th>Property</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Trigger</td><td>Timer — <code>0 45 18 * * *</code> (18:45 UTC daily)</td></tr>
+        <tr><td>Step 1</td><td>Query <code>ADMIN.PIPE_STATUS_LOG</code> — alert on any active pipe not in <code>RUNNING</code> state</td></tr>
+        <tr><td>Step 2</td><td>For each blob in <code>raw/</code>: check <code>ADMIN.PIPE_INGESTION_LOG</code> → move to <code>archive/</code> (Loaded), <code>rejected/</code> (Failed), or leave with alert (not ingested)</td></tr>
+        <tr><td>Step 3</td><td>Send one consolidated SendGrid email if any issues were found</td></tr>
+        <tr><td>Auth to Snowflake</td><td>RSA key-pair service account (<code>crm_archival_svc</code>) — no passwords</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Key Design Decisions ── -->
+  <section>
+    <h2><span class="icon">💡</span> Key Design Decisions</h2>
+
+    <div class="decision">
+      <strong>Why CSV (not Parquet)?</strong>
+      <p>Matches real CRM export format. The lab brief specified external stage + file format handling, which is more instructive with CSV — header skip, quote handling, and explicit date format all have to be configured.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Why pre-upload all 15 daily pairs to <code>seed/future_batches/</code>?</strong>
+      <p><code>splitter.py</code> shifts all TPC-H dates so the max <code>o_orderdate</code> lands exactly 15 days from the run date. Pre-generating gives a deterministic, repeatable dataset without running the generator again each day.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Why Event Grid → Queue Storage instead of Snowpipe REST <code>insertFiles</code>?</strong>
+      <p>Decoupled architecture: Snowpipe auto-retries, no Snowflake credentials live in the Azure Function, and the pattern is standard in enterprise pipelines. The REST API alternative tightly couples <code>crm_mimic</code> to Snowflake.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Why the <code>ADMIN</code> schema with persistent log tables?</strong>
+      <p><code>SYSTEM$PIPE_STATUS()</code> returns live state only; <code>COPY_HISTORY</code> is a transient view with 14-day retention. Persisting both gives <code>crm_archival</code> a durable, queryable audit store — blob lifecycle decisions are driven by data, not timing assumptions.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Why parallel schemas instead of replacing existing ones?</strong>
+      <p>The Basic lab pipeline had 14 M+ historical rows accumulated and was graded. Replacing <code>CORE_DWH</code> in place would require a full re-backfill. Parallel schemas (<code>CORE_DWH_EXT</code>, <code>DATA_MART_DT</code>) demonstrate the contrast directly with zero risk.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Why <code>INSERT_ONLY</code> (not <code>APPEND_ONLY</code>) on external table streams?</strong>
+      <p>Snowflake requires <code>INSERT_ONLY = TRUE</code> for streams on external tables — it tracks file additions, not row-level changes. <code>APPEND_ONLY</code> (used on regular-table streams in <code>STAGE_AREA</code>) is not valid here and will be rejected at DDL time.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Why Dynamic Tables for <code>DATA_MART_DT</code>?</strong>
+      <p><code>DT_FACT_LINEITEM</code> is a 20-line SELECT vs. the ~50-line imperative procedure in <code>sp_core_to_mart</code>. No stream management, no task wiring, no DML. One constraint: Dynamic Tables do not support <code>AUTOINCREMENT</code> — the natural TPC-H composite key <code>(l_orderkey, l_linenumber)</code> is used instead of a surrogate.</p>
+    </div>
+  </section>
+
+  <!-- ── Cross-Cloud Implementation Notes ── -->
+  <section>
+    <h2><span class="icon">☁️</span> Cross-Cloud Implementation Notes (Azure storage + AWS-hosted Snowflake)</h2>
+    <p>The Azure subscription was provisioned first; the Snowflake <strong>trial account was then created on AWS</strong> (Snowflake's default trial provider) rather than on Azure. The pipeline therefore runs <strong>cross-cloud</strong> — storage and event services in Azure, the warehouse in Snowflake-on-AWS. This is a realistic multi-cloud setup, but it removed three event-driven primitives the lab brief assumes are available same-cloud. Each was replaced with a scheduled-task or log-scanning equivalent:</p>
+    <table style="margin-top:10px;">
+      <thead><tr><th>Cross-cloud limitation</th><th>Same-cloud "happy path"</th><th>Workaround used here</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>External tables can't <code>AUTO_REFRESH</code></strong> — event-driven auto-refresh needs storage and Snowflake to share a cloud notification channel; unsupported when ADLS (Azure) feeds Snowflake-on-AWS</td>
+          <td><code>AUTO_REFRESH = TRUE</code> + <code>INTEGRATION</code> on the external table</td>
+          <td><code>task_refresh_ext_tables</code> — scheduled task (18:05 UTC) issuing <code>ALTER EXTERNAL TABLE … REFRESH</code> on both external tables</td>
+        </tr>
+        <tr>
+          <td><strong>Snowpipe status not directly usable by the archival step</strong> — <code>SYSTEM$PIPE_STATUS()</code> returns live state only, isn't queryable from Azure, and cross-cloud notification latency made timing-based archival unreliable</td>
+          <td>Trust auto-ingest timing; check pipe status inline</td>
+          <td>The <code>crm_archival</code> Azure Function authenticates into Snowflake (RSA key-pair) and <strong>scans the persistent <code>ADMIN.PIPE_STATUS_LOG</code> / <code>PIPE_INGESTION_LOG</code> tables</strong> (populated by <code>sp_refresh_pipe_log</code>, 18:30 UTC) to drive blob archival from data, not timing</td>
+        </tr>
+        <tr>
+          <td><strong>Extra Azure hop for Snowpipe notifications</strong> — AWS S3 emits events to SQS natively; Azure has no direct Blob→queue path</td>
+          <td>S3 event → SQS → Snowpipe poll</td>
+          <td>Event Grid (<code>BlobCreated</code> on <code>raw/</code>) → <code>snowpipe-notifications</code> Storage Queue → Snowpipe polls the queue</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px;font-size:13px;color:#555;">Net effect: every place the brief assumed a same-cloud event-driven primitive, it was replaced with a <strong>scheduled-task or persistent-log equivalent</strong> — which also made the pipeline more observable and auditable than the event-driven default would have been.</p>
+  </section>
+
+  <!-- ── SQL Tests ── -->
+  <section>
+    <h2><span class="icon">🧪</span> SQL Tests Performed in Snowflake</h2>
+
+    <div class="decision">
+      <strong>Row Count Validation — Phases 3 &amp; 5</strong>
+      <p>After bulk <code>COPY INTO</code>, a <code>UNION ALL</code> across all 8 <code>STAGE_AREA</code> tables confirmed TPC-H SF=2 counts match the official spec exactly (ORDERS = 2,981,311 · LINEITEM = 11,920,598 · CUSTOMER = 150,000 · PART = 200,000 · PARTSUPP = 800,000 · SUPPLIER = 10,000 · NATION = 25 · REGION = 5). After the ELT chain ran, <code>CORE_DWH</code> and <code>DATA_MART</code> row counts were compared against <code>STAGE_AREA</code> to confirm all rows were promoted without loss or duplication.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Snowpipe Health &amp; Ingestion Audit — Phase 4</strong>
+      <p>Both pipes validated after each daily run using three queries in combination: <code>SYSTEM$PIPE_STATUS()</code> (confirms <code>executionState = RUNNING</code> and <code>pendingFileCount</code>), <code>INFORMATION_SCHEMA.COPY_HISTORY()</code> (rows ingested and errors per file over the last 24 h), and the persistent <code>ADMIN.PIPE_STATUS_LOG</code> / <code>PIPE_INGESTION_LOG</code> tables populated by <code>sp_refresh_pipe_log</code>. Task completion verified via <code>INFORMATION_SCHEMA.TASK_HISTORY()</code>.</p>
+    </div>
+
+    <div class="decision">
+      <strong>TPC-H Warehouse Size Benchmark — Phase 7 (Task 5)</strong>
+      <p>All 22 standard TPC-H queries run with <code>USE_CACHED_RESULT = FALSE</code> across three warehouse sizes in sequence — <strong>X-SMALL → SMALL → MEDIUM</strong> — producing <strong>66 total executions</strong> tagged <code>tpch_bench</code>. Results extracted from <code>INFORMATION_SCHEMA.QUERY_HISTORY</code> and pivoted to compare elapsed_ms, compile_ms vs exec_ms, mb_scanned, and XS→SM / SM→MD speedup ratios per query.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Snowflake Cache Layer Tests — Phase 7</strong>
+      <table style="margin-top:10px;">
+        <thead><tr><th>Layer</th><th>Test method</th><th>Observable signal</th></tr></thead>
+        <tbody>
+          <tr><td>Result Cache (24 h)</td><td>Same Q1 query twice — <code>USE_CACHED_RESULT = TRUE</code></td><td>Run 2: <code>BYTES_SCANNED = 0</code>, elapsed &lt; 50 ms</td></tr>
+          <tr><td>Local Disk Cache (SSD)</td><td>Suspend + Resume to cold SSD, then Q6 twice</td><td><code>PERCENTAGE_SCANNED_FROM_CACHE</code>: 0% → ~100%</td></tr>
+          <tr><td>Partition Pruning</td><td>Date-range and equality-filtered queries vs full scans</td><td><code>BYTES_SCANNED</code> significantly below full table size</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="decision">
+      <strong>Star Schema vs 3NF Performance — Phase 7</strong>
+      <p>Two BI queries run cold on both <code>CORE_DWH</code> (3NF) and <code>DATA_MART</code> (star schema) after Suspend/Resume, result cache disabled:</p>
+      <table style="margin-top:10px;">
+        <thead><tr><th>Query</th><th>3NF joins</th><th>Star joins</th><th>Star advantage</th></tr></thead>
+        <tbody>
+          <tr><td>A — Revenue by Customer Region &amp; Year</td><td>5 tables, 4 joins</td><td>3 tables, 2 joins</td><td><code>DIM_CUSTOMER</code> has <code>region_name</code> pre-joined; <code>net_price</code> pre-computed</td></tr>
+          <tr><td>B — Revenue by Supplier Nation &amp; Year</td><td>4 tables, 3 joins</td><td>3 tables, 2 joins</td><td><code>DIM_SUPPLIER</code> has <code>nation_name</code> pre-joined; <code>net_price</code> pre-computed</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:10px;">Results pivoted from <code>INFORMATION_SCHEMA.QUERY_HISTORY</code>: elapsed_ms, mb_scanned, speedup ratio (3NF_ms / Star_ms).</p>
+    </div>
+
+    <div class="decision">
+      <strong>Object Cloning — Phase 8 (Task 6)</strong>
+      <p>Zero-copy clone of the entire <code>CORE_DWH</code> schema created instantaneously (<code>CREATE SCHEMA … CLONE</code>). A destructive migration (setting <code>o_orderstatus = 'S'</code> for old open orders) applied to <code>CORE_DWH_CLONE.ORDERS</code> was confirmed to leave production untouched. Clone dropped after validation — no extra storage billed while data was shared with the original.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Time Travel Recovery — Phase 8 (Task 6)</strong>
+      <p>Simulated corrupt batch ingestion (1,000 rows with <code>o_orderdate</code> shifted +1 year). Two recovery paths tested: <strong>(1) surgical DELETE</strong> (<code>WHERE o_comment LIKE 'CORRUPT BATCH%'</code>) and <strong>(2) full restore</strong> via Time Travel clone (<code>CLONE STAGE_AREA.ORDERS AT (OFFSET =&gt; -300)</code>, anchored 5 minutes before the incident). Post-recovery: <code>COUNT(*) WHERE o_orderdate &gt; CURRENT_DATE = 0</code>.</p>
+    </div>
+
+    <div class="decision">
+      <strong>Secure Data Sharing — Phase 8 (Task 6)</strong>
+      <p>Named share created exposing all <code>DATA_MART</code> tables (5 dims + fact) with no data copying: <code>CREATE SHARE crm_datamart_share</code> + <code>GRANT SELECT ON ALL TABLES IN SCHEMA EPAM_LAB.DATA_MART</code>. Also provisioned a managed Reader Account (<code>finance_reader_acct</code>) for consumers without their own Snowflake subscription — consumer queries execute against the provider's micro-partitions, always live, zero ETL.</p>
+    </div>
+  </section>
+
+  <!-- ── Lab Score ── -->
+  <section>
+    <h2><span class="icon">🏆</span> Lab Score Breakdown</h2>
+    <table>
+      <thead><tr><th>Task</th><th style="text-align:center">Points</th><th style="text-align:center">Status</th><th>Plan reference</th></tr></thead>
+      <tbody>
+        <tr><td>1 — Database creation</td><td style="text-align:center">5</td><td style="text-align:center"><span class="status-done">✅</span></td><td>Phase 2a (<code>project_plan.md</code>)</td></tr>
+        <tr><td>2 — Data loading to external stage</td><td style="text-align:center">10</td><td style="text-align:center"><span class="status-done">✅</span></td><td>Phase 3</td></tr>
+        <tr><td>3 — ELT workflow (Stage → CORE_DWH → DATA_MART)</td><td style="text-align:center">30</td><td style="text-align:center"><span class="status-done">✅</span></td><td>Phase 5</td></tr>
+        <tr><td>4 — BI tool + SQL editor connection</td><td style="text-align:center">10</td><td style="text-align:center"><span class="status-done">✅</span></td><td>Phase 6</td></tr>
+        <tr><td>5 — Snowflake SQL performance testing</td><td style="text-align:center">10</td><td style="text-align:center"><span class="status-done">✅</span></td><td>Phase 7</td></tr>
+        <tr><td>6 — Object Cloning, Time Travel, Data Sharing</td><td style="text-align:center">10</td><td style="text-align:center"><span class="status-done">✅</span></td><td>Phase 8</td></tr>
+        <tr><td>7 — Snowpipe automated incremental loading</td><td style="text-align:center">20</td><td style="text-align:center"><span class="status-done">✅</span></td><td>Phase 4</td></tr>
+        <tr><td>8 — Partner Connect integrations</td><td style="text-align:center">5</td><td style="text-align:center"><span class="status-todo">⬜</span></td><td>—</td></tr>
+        <tr class="score-total"><td><strong>Total confirmed</strong></td><td style="text-align:center"><strong>100</strong></td><td style="text-align:center"><strong>≥ 95</strong></td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Files ── -->
+  <section>
+    <h2><span class="icon">📂</span> Repository Files</h2>
+    <table>
+      <thead><tr><th>File / Folder</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>splitter.py</code></td><td>TPC-H data prep — reads <code>.tbl</code> files, shifts dates, splits into historical + 15 daily CSVs</td></tr>
+        <tr><td><code>generate_daily.py</code></td><td>Utility for generating individual daily batch files</td></tr>
+        <tr><td><code>tpch_ddl.sql</code></td><td>Original TPC-H DDL (reference)</td></tr>
+        <tr><td><code>tpch_benchmark_queries.sql</code></td><td>All 22 TPC-H queries adapted for Snowflake, dates shifted to match the lab dataset</td></tr>
+        <tr><td><code>project_plan.md</code></td><td>Step-by-step plan for the Basic lab (Tasks 1–8), fully annotated with completed checkboxes</td></tr>
+        <tr><td><code>advanced_lab_plan.md</code></td><td>Plan for the Advanced lab: external tables, streams, script registry, tasks, Dynamic Tables</td></tr>
+        <tr><td><code>PROJECT_SUMMARY.md</code></td><td>Project summary (source for this HTML)</td></tr>
+        <tr><td><code>azure-crm-mimic-fn/</code></td><td>Azure Function — CRM export simulator (timer trigger, 18:00 UTC)</td></tr>
+        <tr><td><code>azure-crm-archival-fn/</code></td><td>Azure Function — blob lifecycle + SendGrid alerting (timer trigger, 18:45 UTC)</td></tr>
+        <tr><td><code>Snowflake/queries/</code></td><td>SQL scripts organised by phase (DDL, COPY INTO, stored procedures, tasks, benchmarks)</td></tr>
+        <tr><td><code>PBI/</code></td><td>Power BI <code>.pbix</code> report file</td></tr>
+        <tr><td><code>rsa_key.pub</code></td><td>RSA public key registered on <code>crm_archival_svc</code> Snowflake user (private key gitignored)</td></tr>
+        <tr><td><code>tests/</code></td><td>Validation scripts</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+</body>
+</html>
